@@ -1,9 +1,14 @@
-import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 import css from './ContactForm.module.css';
 
-export function ContactForm({ createContact }) {
-  const [name, setName] = useState('');
+export function ContactForm() {
+  const contacts = useSelector(state => state.contacts.contacts);
+  const dispatch = useDispatch();
+
+  const [contactName, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handleChange = ({ target }) => {
@@ -24,10 +29,22 @@ export function ContactForm({ createContact }) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    createContact({
-      name: name,
-      number: number,
-    });
+    const isAdded = contacts.some(
+      ({ name }) => name.toLowerCase() === contactName.toLowerCase()
+    );
+
+    if (isAdded) {
+      alert(`${contactName}  is already in contacts.`);
+      return;
+    }
+
+    dispatch(
+      addContact({
+        name: contactName,
+        number: number,
+        id: nanoid(),
+      })
+    );
 
     reset();
   };
@@ -49,7 +66,7 @@ export function ContactForm({ createContact }) {
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           onChange={handleChange}
-          value={name}
+          value={contactName}
           required
         />
       </label>
@@ -72,7 +89,3 @@ export function ContactForm({ createContact }) {
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  createContact: PropTypes.func.isRequired,
-};
