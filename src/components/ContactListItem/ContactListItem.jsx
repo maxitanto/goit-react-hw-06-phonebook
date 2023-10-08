@@ -22,6 +22,5 @@ export function ContactListItem({ name, number, id }) {
 ContactListItem.propTypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
-  handleDelete: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };

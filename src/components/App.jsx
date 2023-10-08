@@ -4,10 +4,6 @@ import { Filter } from './Filter/Filter';
 import css from './App.module.css';
 
 export const App = () => {
-  // useEffect(() => {
-  //   localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
-
   return (
     <div className={css.container}>
       <h1 className={css.title}> Phonebook </h1>
